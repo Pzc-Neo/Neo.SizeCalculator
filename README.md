@@ -5,4 +5,4 @@
 ![](Screenshots/2.jpg)
 
 ## 使用演示
-![](ScreenShots/3.gif)
+![](Screenshots/3.gif)
