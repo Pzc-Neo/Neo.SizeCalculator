@@ -7,12 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="SettingWindow"
-    Width="250"
-    Height="146"
+    Width="400"
+    Height="196"
     MinWidth="250"
     MinHeight="146"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
     <StackPanel>
         <StackPanel.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -25,20 +30,40 @@
             Title="预设尺寸设置"
             VerticalContentAlignment="Top"
             FontSize="15" />
-        <Grid>
+        <Grid Margin="12,0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="6" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="44" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="textBox_PresetSize" Margin="15,0" />
+
+            <TextBlock Text="源尺寸" />
+            <TextBox
+                x:Name="textBox_SourcePresetSize"
+                Grid.Column="1"
+                Margin="15,0" />
+            <TextBlock Grid.Row="2" Text="新尺寸" />
+            <TextBox
+                x:Name="textBox_PresetSize"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="15,0" />
             <StackPanel
-                Grid.Row="1"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
                 Margin="15"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
+                <Button
+                    Margin="6,0"
+                    Padding="10,6"
+                    Click="ResetButton_Click"
+                    Content="恢复默认" />
                 <Button
                     Margin="6,0"
                     Padding="10,6"
@@ -49,11 +74,6 @@
                     Padding="10,6"
                     Click="CancelButton_Click"
                     Content="取消" />
-                <Button
-                    Margin="6,0"
-                    Padding="10,6"
-                    Click="ResetButton_Click"
-                    Content="恢复默认" />
             </StackPanel>
         </Grid>
     </StackPanel>

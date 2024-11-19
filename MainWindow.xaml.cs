@@ -106,20 +106,31 @@ namespace Neo.SizeCalculator
             ViewModelMainWindow.ResultWidth = Convert.ToDouble(width);
 
         }
-        private void SetSizePreset(string sizePresetsStr)
+        private void SetSizePreset(string sizePresetsStr, string sourceSizePresetsStr)
         {
             ViewModelMainWindow.SetSizePresets(sizePresetsStr);
+            ViewModelMainWindow.SetSourceSizePresets(sourceSizePresetsStr);
         }
 
         private void SettingButtonClick(object sender, RoutedEventArgs e)
         {
             string sizePresetsStr = string.Join(",", ViewModelMainWindow.SizePresets);
-            SettingWindow settingWindow = new SettingWindow(sizePresetsStr)
+            string sourceSizePresetsStr = string.Join(",", ViewModelMainWindow.SourceSizePresets);
+            SettingWindow settingWindow = new SettingWindow(sizePresetsStr, sourceSizePresetsStr)
             {
                 Owner = this
             };
             settingWindow.setSizePreset = SetSizePreset;
             settingWindow.ShowDialog();
+        }
+
+        private void ComboBox_SourceSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = ((ComboBox)sender).SelectedItem ?? ((ComboBox)sender).SelectionBoxItem;
+            var sizesStr = item.ToString();
+            var sizes = sizesStr.Split('x').Select(int.Parse).ToArray();
+            ViewModelMainWindow.SourceWidth = sizes[0];
+            ViewModelMainWindow.SourceHeight = sizes[1];
         }
     }
 }

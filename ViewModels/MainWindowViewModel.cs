@@ -45,12 +45,41 @@ namespace Neo.SizeCalculator.ViewModels
             {
                 ResultWidth = SizePresets[0];
             }
+
+            var sourceSizePresetsStr = ConfigHelper.GetConfigValue("sourceSizePresets");
+            if (sourceSizePresetsStr == string.Empty)
+            {
+                SetDefaultSourceSizePreset();
+            }
+            else
+            {
+                try
+                {
+                    SourceSizePresets = sourceSizePresetsStr.Split(',').ToArray();
+                }
+                catch (Exception)
+                {
+                    SetDefaultSourceSizePreset();
+                }
+            }
+            if (SourceSizePresets.Length > 0)
+            {
+                var sizes = SourceSizePresets[0].Split('x').Select(int.Parse).ToArray<int>();
+                SourceWidth = sizes[0];
+                SourceHeight = sizes[1];
+            }
         }
         private void SetDefaultSizePreset()
         {
             int[] sizes = { 512, 682, 768, 1024 };
             ConfigHelper.SaveConfigValue("sizePresets", string.Join(",", sizes));
             SizePresets = sizes;
+        }
+        private void SetDefaultSourceSizePreset()
+        {
+            string[] sizes = { "512x768", "768x1024" };
+            ConfigHelper.SaveConfigValue("sourceSizePresets", string.Join(",", sizes));
+            SourceSizePresets = sizes;
         }
         private int[] sizePresets;
         public int[] SizePresets
@@ -62,6 +91,19 @@ namespace Neo.SizeCalculator.ViewModels
                 OnProertyChanged(nameof(SizePresets));
             }
         }
+
+        private string[] sourceSizePresets;
+
+        public string[] SourceSizePresets
+        {
+            get { return sourceSizePresets; }
+            set
+            {
+                sourceSizePresets = value;
+                OnProertyChanged(nameof(SourceSizePresets));
+            }
+        }
+
         public void SetSizePresets(string sizePresetsStr)
         {
             Regex regex = new Regex(@"\d+");
@@ -77,6 +119,22 @@ namespace Neo.SizeCalculator.ViewModels
                 ConfigHelper.SaveConfigValue("sizePresets", string.Join(",", sizes));
             }
         }
+        public void SetSourceSizePresets(string sourceSizePresetsStr)
+        {
+            Regex regex = new Regex(@"\d+?x\d+");
+            var matchs = regex.Matches(sourceSizePresetsStr);
+            if (matchs.Count > 0)
+            {
+                string[] sizes = new string[matchs.Count];
+                for (int i = 0; i < matchs.Count; i++)
+                {
+                    sizes[i] = matchs[i].Value;
+                }
+                SourceSizePresets = sizes;
+                ConfigHelper.SaveConfigValue("sourceSizePresets", string.Join(",", sizes));
+            }
+        }
+
 
         private bool isResultWidthBoxChanged;
 

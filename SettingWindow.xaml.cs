@@ -24,24 +24,24 @@ namespace Neo.SizeCalculator
         {
             InitializeComponent();
         }
-        public SettingWindow(string sizePresetStr)
+        public SettingWindow(string sizePresetStr, string sourceSizePresetStr)
         {
             InitializeComponent();
             textBox_PresetSize.Text = sizePresetStr;
+            textBox_SourcePresetSize.Text = sourceSizePresetStr;
             textBox_PresetSize.Focus();
         }
-        public delegate void SetSizePresetsDelegate(string sizePresetsStr);
+        public delegate void SetSizePresetsDelegate(string sizePresetsStr, string sourceSizePresetStr);
 
         public SetSizePresetsDelegate setSizePreset;
-        public void SetSizePresets(string sizePresetsStr)
+        public void SetSizePresets(string sizePresetsStr, string sourceSizePresetStr)
         {
-            Console.WriteLine("SetSizePresets");
-            setSizePreset(sizePresetsStr);
+            setSizePreset(sizePresetsStr, sourceSizePresetStr);
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            SetSizePresets(textBox_PresetSize.Text);
+            SetSizePresets(textBox_PresetSize.Text, textBox_SourcePresetSize.Text);
             this.Close();
         }
 
